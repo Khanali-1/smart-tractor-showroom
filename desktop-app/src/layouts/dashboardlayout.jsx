@@ -6,9 +6,10 @@ function DashboardLayout() {
   return (
     <div className="min-h-screen bg-slate-100">
 
+      <Navbar />
+
       <Sidebar />
 
-      <Navbar />
 
       {/* main area of application = knows as main atg  */ }
 

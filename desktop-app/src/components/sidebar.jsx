@@ -1,68 +1,180 @@
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
-  Tractor,
-  Users,
-  ShoppingCart,
-  CreditCard,
-  UserRound,
-  ClipboardCheck,
+ 
   LogOut,
 } from "lucide-react";// react icon 
+import { useState } from "react";
 
-const menuItems = [// array of objects write ur icons data 
+const menuItems = [
+  // =========================
+  // DASHBOARD
+  // =========================
   {
     name: "Dashboard",
     path: "/dashboard",
     icon: LayoutDashboard,
+    roles: ["admin", "hr"],
   },
+
+  // =========================
+  // INVENTORY
+  // ADMIN ONLY
+  // =========================
   {
     name: "Tractors",
-    path: "/tractors",
-    icon: Tractor,
+    path: "/tractor",
+    roles: ["admin"],
   },
+
+  {
+    name: "Barcode/QR Code",
+    path: "/barcode",
+    roles: ["admin"],
+  },
+
+  {
+    name: "Stock Alert",
+    path: "/stockalert",
+    roles: ["admin"],
+  },
+
+  // =========================
+  // CUSTOMERS
+  // ADMIN ONLY
+  // =========================
   {
     name: "Customers",
     path: "/customers",
-    icon: Users,
+    roles: ["admin"],
   },
+
   {
-    name: "Sales / POS",
-    path: "/sales",
-    icon: ShoppingCart,
+    name: "Customers360",
+    path: "/customers360",
+    roles: ["admin"],
   },
+
+  // =========================
+  // SALES
+  // ADMIN ONLY
+  // =========================
   {
-    name: "Payments",
-    path: "/payments",
-    icon: CreditCard,
+    name: "POS",
+    path: "/pos",
+    roles: ["admin"],
   },
+
+  {
+    name: "Billing",
+    path: "/billing",
+    roles: ["admin"],
+  },
+
+  // =========================
+  // HR MANAGEMENT
+  // ADMIN + HR
+  // =========================
   {
     name: "Employees",
     path: "/employees",
-    icon: UserRound,
+    roles: ["admin", "hr"],
   },
+
   {
     name: "Attendance",
-    path: "/attendance",
-    icon: ClipboardCheck,
+    path: "/attandance",
+    roles: ["admin", "hr"],
+  },
+
+  {
+    name: "Leave",
+    path: "/leave",
+    roles: ["admin", "hr"],
+  },
+
+  {
+    name: "Performance",
+    path: "/performance",
+    roles: ["admin", "hr"],
+  },
+
+  // =========================
+  // REPORTS
+  // =========================
+  {
+    name: "Sales Reports",
+    path: "/salesreport",
+    roles: ["admin"],
+  },
+
+  {
+    name: "Finance Reports",
+    path: "/financereports",
+    roles: ["admin"],
+  },
+
+  {
+    name: "HR Reports",
+    path: "/hrreport",
+    roles: ["admin", "hr"],
+  },
+
+  // =========================
+  // SYSTEM
+  // ADMIN ONLY
+  // =========================
+  {
+    name: "Users",
+    path: "/users",
+    roles: ["admin"],
+  },
+
+  {
+    name: "Settings",
+    path: "/settings",
+    roles: ["admin"],
+  },
+
+  // =========================
+  // PROFILE
+  // BOTH
+  // =========================
+  {
+    name: "Profile",
+    path: "/profile",
+    roles: ["admin", "hr"],
+  },
+
+  // =========================
+  // EXTRA FEATURES
+  // ADMIN ONLY
+  // =========================
+  {
+    name: "Tractor Recommendation",
+    path: "/recomandation",
+    roles: ["admin"],
+  },
+
+  {
+    name: "Notification",
+    path: "/notification",
+    roles: ["admin", "hr"],
   },
 ];
 
+
 function Sidebar() {
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role;
+
+  const [openmenu,setOpenmenu]=useState(null);
   return (
     // aside mean html atg that write down as in the side
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-950 text-white">
+    <aside className="fixed left-0 top-20 h-[calc(100vh-5rem)] w-60 overflow-y-auto bg-[#0C192A] text-white">
 
-      <div className="flex h-20 items-center gap-3 border-b border-slate-800 px-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-600">
-          <Tractor size={23} />
-        </div>
-
-        <div>
-          <h1 className="font-bold">Smart Tractor</h1>
-          <p className="text-xs text-slate-400">Showroom System</p>
-        </div>
-      </div>
+      
 
       <nav className="p-4">
 
@@ -74,7 +186,10 @@ function Sidebar() {
 
 
           {menuItems.map((item) => {
-            const Icon = item.icon;// store icon value in icon var;
+            // check for role includes
+            // if current users role= (role) is not allowed ! item.role include not init then return nul;
+            if (!item.roles.includes(role)) return null;
+            //const Icon = item.icon;// store icon value in icon var;
 
             return (
               <NavLink
@@ -83,12 +198,12 @@ function Sidebar() {
                 className={({ isActive }) =>// if mouseover 
                   `flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition ${
                     isActive
-                      ? "bg-green-600 text-white"
+                      ? "bg-blue-500 text-white"
                       : "text-slate-300 hover:bg-slate-800"
                   }`
                 }
               >
-                <Icon size={19} />
+               
                 {item.name}
               </NavLink>
             );
@@ -110,4 +225,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default Sidebar; 

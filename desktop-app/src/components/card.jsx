@@ -1,5 +1,6 @@
 function Card({ title, value, icon, description }) {
   // props r title,value,icon,description helps to send data from parent to child
+  // making card componet and passing value in <Card/> as much as w ewant
   return (
     <div className="rounded-xl border bg-white p-5 shadow-sm">
 
